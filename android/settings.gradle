@@ -1,0 +1,3 @@
+rootProject.name = 'reactNativeReduxGo'
+
+include ':app'
