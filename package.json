@@ -1,6 +1,8 @@
 {
-  "name": "reactNativeReduxGo",
+  "name": "react-native-redux-go",
   "version": "0.0.1",
+  "description": "React native project",
+  "author": "okapie",
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
