@@ -1,12 +1,9 @@
 import { applyMiddleware, createStore, compose } from "redux";
 import thunk from "redux-thunk";
-
-// TODO: Below is a temporary variable.
-const reducer = {};
+import rootReducer from "../modules"
 
 export const store = createStore(
-  // TODO: Must define rootReducer, then replace 'reducer' with new one.
-  reducer,
+  rootReducer,
   compose(
     applyMiddleware(thunk)
   )
