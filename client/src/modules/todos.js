@@ -38,3 +38,5 @@ const reducers = handleActions(
    */
   defaultState
 );
+
+export default { actions, reducers }

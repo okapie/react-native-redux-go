@@ -1,9 +1,14 @@
 import { combineReducers } from "redux";
+import Todos from "./todos";
 
-// TODO: Below is a temporary variable.
-const Todos = {}
-
-export default combineReducers({
-  // TODO: Must define Todos as a reducer, then replace 'Todos' with new one.
-  todos: Todos
-})
+/**
+ * Root Reducer.
+ */
+export default {
+  action: {
+    ...Todos.actions
+  },
+  reducer: combineReducers({
+    todos: Todos.reducers
+  })
+}
