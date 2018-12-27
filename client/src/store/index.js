@@ -3,7 +3,7 @@ import thunk from "redux-thunk";
 import rootReducer from "../modules"
 
 export const store = createStore(
-  rootReducer,
+  rootReducer.reducer,
   compose(
     applyMiddleware(thunk)
   )
