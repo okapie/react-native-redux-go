@@ -4,23 +4,46 @@ import { connect } from "react-redux";
 import modules from "../../modules";
 
 class Todos extends Component {
+  listObject = {};
+
   constructor(props) {
     super(props);
     this.state = {
-      list: {}
-    }
+      list: ""
+    };
+    props.getTodosList();
+    this.listObject = props.list;
   }
 
   render() {
+    const content =
+      Object.keys(this.listObject).length === 0
+        ? <Text>No list.</Text>
+        : Object.entries(this.listObject).map((value, index) => <Text key={`todo_${index}`}>{ value }</Text>);
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>Bonjour à tous!</Text>
+        { content }
       </View>
-    )
+    );
   }
 }
 
-export default connect(state => state)(Todos);
+const mapDispatchToProps = dispatch => {
+  return {
+    getTodosList: () => dispatch(modules.action.getTodosList())
+  };
+};
+
+const mapStateToProps = state => {
+  return {
+    list: state.list
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Todos);
 
 const styles = StyleSheet.create({
   container: {

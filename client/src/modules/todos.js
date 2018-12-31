@@ -4,10 +4,13 @@ import { createAction, handleActions } from "redux-actions";
  * Default State.
  */
 const defaultState = {
-  list: {
-    isFetching: false,
-    data: null
-  }
+  // list: [],
+  // TODO: Below one is to test.
+  list: [
+    "Go shopping.",
+    "Go to the office.",
+    "Go the hospital."
+  ]
 };
 
 /**
@@ -27,10 +30,7 @@ const reducers = handleActions(
    */
   {
     [GET_TODOS_LIST]: (state, action) => ({
-      list: {
-        isFetching: false,
-        data: action.payload
-      }
+      list: action.payload
     })
   },
   /**
