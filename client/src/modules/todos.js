@@ -9,7 +9,7 @@ const defaultState = {
   list: [
     "Go shopping.",
     "Go to the office.",
-    "Go the hospital."
+    "Go to the hospital."
   ],
   postResult: false
 };

@@ -4,10 +4,12 @@ import {
   Text,
   TextInput,
   Button,
+  FlatList,
   StyleSheet
 } from "react-native";
 import { connect } from "react-redux";
 import modules from "../../modules";
+import { ItemForm } from "../common/molecules/ItemForm";
 
 class Todos extends Component {
   listObject = {};
@@ -15,7 +17,7 @@ class Todos extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      list: "",
+      list: [],
       inputText: "",
       validation: {}
     };
@@ -44,11 +46,17 @@ class Todos extends Component {
     this.props.postTodo(this.state.inputText);
   };
 
+  renderTodoItems = () => {
+    let itemArray = []
+    Object.entries(this.listObject).map(([key, value]) => {
+      Object.entries(value).map(([childKey, childValue]) => {
+        itemArray.push({ key: childValue });
+      });
+    });
+    return itemArray;
+  };
+
   render() {
-    const content =
-      Object.keys(this.listObject).length === 0
-        ? <Text>No list.</Text>
-        : Object.entries(this.listObject).map(([key, value], index) => <Text key={`todo_${index}`}>{ value }</Text>);
     const validation =
       Object.keys(this.state.validation).length === 0
         ? null
@@ -68,7 +76,10 @@ class Todos extends Component {
           style={styles.button}
           onPress={this.handlerAddTodo}
         />
-        { content }
+        <FlatList
+          data={this.renderTodoItems()}
+          renderItem={({item}) => <ItemForm value={item.key} />}
+        />
       </View>
     );
   }
@@ -94,6 +105,7 @@ export default connect(
 
 const styles = StyleSheet.create({
   container: {
+    marginTop: 80,
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
