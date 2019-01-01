@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, Button, StyleSheet } from "react-native";
 import { connect } from "react-redux";
 import modules from "../../modules";
 
@@ -23,6 +23,11 @@ class Todos extends Component {
     return (
       <View style={styles.container}>
         { content }
+        <Button
+          title="Add"
+          style={styles.button}
+          onPress={() => console.log("Pressed")}
+        />
       </View>
     );
   }
@@ -56,5 +61,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: "center",
     margin: 10
+  },
+  button: {
+    margin: 0
   }
 });
