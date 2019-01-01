@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { View, Text, Button, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  Button,
+  StyleSheet
+} from "react-native";
 import { connect } from "react-redux";
 import modules from "../../modules";
 
@@ -22,12 +28,17 @@ class Todos extends Component {
         : Object.entries(this.listObject).map((value, index) => <Text key={`todo_${index}`}>{ value }</Text>);
     return (
       <View style={styles.container}>
-        { content }
+        <TextInput
+          value="Test Value"
+          onChangeText={() => console.log("Input")}
+          style={styles.input}
+        />
         <Button
           title="Add"
           style={styles.button}
           onPress={() => console.log("Pressed")}
         />
+        { content }
       </View>
     );
   }
@@ -64,5 +75,14 @@ const styles = StyleSheet.create({
   },
   button: {
     margin: 0
+  },
+  input: {
+    width: 200,
+    height: 50,
+    padding: 8,
+    color: "#000",
+    fontSize: 14,
+    borderColor: "#000",
+    borderWidth: 1
   }
 });
