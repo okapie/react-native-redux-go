@@ -15,11 +15,16 @@ class Todos extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      list: ""
+      list: "",
+      inputText: ""
     };
     props.getTodosList();
     this.listObject = props.list;
   }
+
+  handlerChangeInputText = inputText => {
+    this.setState({inputText})
+  };
 
   render() {
     const content =
@@ -29,8 +34,8 @@ class Todos extends Component {
     return (
       <View style={styles.container}>
         <TextInput
-          value="Test Value"
-          onChangeText={() => console.log("Input")}
+          value={this.state.inputText}
+          onChangeText={this.handlerChangeInputText}
           style={styles.input}
         />
         <Button
