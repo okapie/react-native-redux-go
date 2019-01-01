@@ -10,15 +10,18 @@ const defaultState = {
     "Go shopping.",
     "Go to the office.",
     "Go the hospital."
-  ]
+  ],
+  postResult: false
 };
 
 /**
  * Action Creator.
  */
 const GET_TODOS_LIST = "GET_TODOS_LIST";
+const POST_TODO = "POST_TODO";
 const actions = {
-  getTodosList: createAction(GET_TODOS_LIST)
+  getTodosList: createAction(GET_TODOS_LIST),
+  postTodo: createAction(POST_TODO)
 };
 
 /**
@@ -31,6 +34,9 @@ const reducers = handleActions(
   {
     [GET_TODOS_LIST]: (state, action) => ({
       list: action.payload
+    }),
+    [POST_TODO]: (state, action) => ({
+      postResult: action.payload
     })
   },
   /**
