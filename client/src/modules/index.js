@@ -9,6 +9,6 @@ export default {
     ...Todos.actions
   },
   reducer: combineReducers({
-    list: Todos.reducers
+    todos: Todos.reducers
   })
 }

@@ -1,27 +1,22 @@
 import { createAction, handleActions } from "redux-actions";
+import TodosService from "../services/todos";
 
 /**
  * Default State.
  */
 const defaultState = {
-  // list: [],
-  // TODO: Below one is to test.
-  list: [
-    "Go shopping.",
-    "Go to the office.",
-    "Go to the hospital."
-  ],
+  list: [],
   postResult: false
 };
 
 /**
  * Action Creator.
  */
-const GET_TODOS_LIST = "GET_TODOS_LIST";
-const POST_TODO = "POST_TODO";
+const GET_TODOS_LIST_DONE = "GET_TODOS_LIST_DONE";
+const POST_TODO_DONE = "POST_TODO_DONE";
 const actions = {
-  getTodosList: createAction(GET_TODOS_LIST),
-  postTodo: createAction(POST_TODO)
+  getTodosListDone: createAction(GET_TODOS_LIST_DONE),
+  postTodoDone: createAction(POST_TODO_DONE)
 };
 
 /**
@@ -32,17 +27,32 @@ const reducers = handleActions(
    * reducerMap.
    */
   {
-    [GET_TODOS_LIST]: (state, action) => ({
-      list: action.payload
-    }),
-    [POST_TODO]: (state, action) => ({
-      postResult: action.payload
-    })
+    [GET_TODOS_LIST_DONE]: (state, { payload }) => ({ list: payload }),
+    [POST_TODO_DONE]: (state, { payload }) => ({ postResult: payload })
   },
   /**
    * defaultState.
    */
   defaultState
 );
+
+/**
+ * Tasks.
+ */
+export const postTodo = () => {
+  return async dispatch => {
+    // TODO: connect to API.
+    dispatch(actions.postTodoDone(true));
+  }
+};
+
+export const getTodosList = () => {
+  return async dispatch => {
+    const response = await TodosService.getTodoList();
+    if (response.length > 0) {
+      dispatch(actions.getTodosListDone(response));
+    }
+  }
+};
 
 export default { actions, reducers }

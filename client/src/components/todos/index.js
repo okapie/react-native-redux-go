@@ -8,22 +8,35 @@ import {
   StyleSheet
 } from "react-native";
 import { connect } from "react-redux";
-import modules from "../../modules";
+import { getTodosList, postTodo } from "../../modules/todos";
 import { ItemForm } from "../common/molecules/ItemForm";
 
 class Todos extends Component {
-  listObject = {};
-
   constructor(props) {
     super(props);
     this.state = {
-      list: [],
+      todos: {
+        list: [],
+        postResult: false
+      },
       inputText: "",
       validation: {}
     };
-    props.getTodosList();
-    this.listObject = props.list;
+
+    this.handlerChangeInputText = this.handlerChangeInputText.bind(this);
+    this.handlerAddTodo = this.handlerAddTodo.bind(this);
+    this.handlerDisplayTodoList = this.handlerDisplayTodoList.bind(this);
+    this.renderTodoItems = this.renderTodoItems.bind(this);
   }
+
+  componentDidMount = () => {
+    if (this.props.todos) {
+      this.props.getTodosList();
+      this.setState({
+        list: this.props.todos.list
+      })
+    }
+  };
 
   handlerChangeInputText = inputText => {
     this.setState({inputText})
@@ -46,12 +59,18 @@ class Todos extends Component {
     this.props.postTodo(this.state.inputText);
   };
 
+  handlerDisplayTodoList = async () => {
+    this.props.getTodosList();
+    const list = await this.props.todos.list;
+    if (list.length > 0) {
+      this.setState({ list })
+    }
+  };
+
   renderTodoItems = () => {
-    let itemArray = []
-    Object.entries(this.listObject).map(([key, value]) => {
-      Object.entries(value).map(([childKey, childValue]) => {
-        itemArray.push({ key: childValue });
-      });
+    let itemArray = [];
+    Object.entries(this.state.list).map(([key, value]) => {
+      itemArray.push({ key: value.item });
     });
     return itemArray;
   };
@@ -76,27 +95,33 @@ class Todos extends Component {
           style={styles.button}
           onPress={this.handlerAddTodo}
         />
-        <FlatList
-          data={this.renderTodoItems()}
-          renderItem={({item}) => <ItemForm value={item.key} />}
+        <Button
+          title="Show List"
+          style={styles.button}
+          onPress={this.handlerDisplayTodoList}
         />
+        { this.state.list && this.state.list.length > 0 ?
+          <FlatList
+            data={this.renderTodoItems()}
+            renderItem={({item}) => <ItemForm value={item.key} />}
+          /> : null
+        }
       </View>
     );
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    getTodosList: () => dispatch(modules.action.getTodosList()),
-    postTodo: value => dispatch(modules.action.postTodo(value))
-  };
-};
+const mapDispatchToProps = dispatch => ({
+  getTodosList: () => dispatch(getTodosList()),
+  postTodo: value => dispatch(postTodo(value))
+});
 
-const mapStateToProps = state => {
-  return {
-    list: state.list
-  };
-};
+const mapStateToProps = state => ({
+  todos: {
+    list: state.todos.list,
+    postResult: state.todos.postResult
+  }
+});
 
 export default connect(
   mapStateToProps,
@@ -107,7 +132,6 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 80,
     flex: 1,
-    justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#F5FCFF"
   },

@@ -17,6 +17,7 @@
     "redux-thunk": "2.3.0"
   },
   "devDependencies": {
+    "axios": "0.18.0",
     "babel-jest": "23.6.0",
     "jest": "23.6.0",
     "metro-react-native-babel-preset": "0.51.1",
