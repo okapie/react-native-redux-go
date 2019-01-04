@@ -33,17 +33,17 @@ func openDB() (db *sql.DB) {
 
 func getTodoList(w http.ResponseWriter, r *http.Request) {
     db := openDB()
-    rows, err := db.Query("SELECT * FROM Tb_Todos ORDER BY id DESC")
+    records, err := db.Query("SELECT * FROM Tb_Todos ORDER BY id DESC")
     if err != nil {
         panic(err.Error())
     }
     var todos []Todo
-    for rows.Next() {
+    for records.Next() {
 
         var id int
         var item string
 
-        rows.Scan(&id ,&item)
+        records.Scan(&id ,&item)
         todos = append(todos, Todo{ id, item })
     }
     todosBytes, _ := json.Marshal(&todos)
@@ -61,13 +61,26 @@ func postTodo(w http.ResponseWriter, r *http.Request) {
 
     db := openDB()
     item := string(body)
-    insForm, err := db.Prepare("INSERT INTO Tb_Todos(item) VALUES(?)")
+    record, err := db.Prepare("INSERT INTO Tb_Todos(item) VALUES(?)")
     if err != nil {
         panic(err.Error())
     }
-    insForm.Exec(item)
-    log.Println("INSERT: Item: " + item)
+    record.Exec(item)
+    log.Println("INSERT Item: " + item)
 
+    defer db.Close()
+    http.Redirect(w, r, "/", 200)
+}
+
+func deleteTodo(w http.ResponseWriter, r *http.Request) {
+    db := openDB()
+    item := r.URL.Query().Get("id")
+    record, err := db.Prepare("DELETE FROM Tb_Todos WHERE id=?")
+    if err != nil {
+        panic(err.Error())
+    }
+    record.Exec(item)
+    log.Println("DELETE Item: " + item)
     defer db.Close()
     http.Redirect(w, r, "/", 200)
 }
@@ -80,6 +93,7 @@ func main() {
     r := mux.NewRouter()
     r.HandleFunc("/api/v1/todos", getTodoList).Methods("GET")
     r.HandleFunc("/api/v1/todo", postTodo).Methods("POST")
+    r.HandleFunc("/api/v1/todo", deleteTodo).Methods("DELETE")
 
     log.Fatal(http.ListenAndServe(":8000", handlers.CORS(allowedOrigins, allowedMethods, allowedHeaders)(r)))
 }

@@ -14,4 +14,11 @@ export default class TodosService {
       .then(response => response.data)
       .catch(error => error.response.data)
   }
+
+  static async deleteTodo(parameter) {
+    return await client()
+      .delete(`/todo?id=${parameter}`)
+      .then(response => response.data)
+      .catch(error => error.response.data)
+  }
 }

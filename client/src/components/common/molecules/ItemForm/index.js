@@ -1,14 +1,14 @@
 import React from "react";
-import {View, Button, StyleSheet, Text, TextInput} from "react-native";
+import { View, Button, StyleSheet, Text } from "react-native";
 // import { Input } from "../../atoms/Input";
 
-export const ItemForm = ({ value }) => (
+export const ItemForm = ({ value, onPress }) => (
   <View>
-    <Text># { value } </Text>
+    <Text># { value.item } </Text>
     <Button
       title="Delete"
       style={styles.button}
-      onPress={() => {}}
+      onPress={() => onPress(value.id)}
     />
   </View>
 );

@@ -8,7 +8,7 @@ import {
   StyleSheet
 } from "react-native";
 import { connect } from "react-redux";
-import { getTodosList, postTodo } from "../../modules/todos";
+import { getTodosList, postTodo, deleteTodo } from "../../modules/todos";
 import { ItemForm } from "../common/molecules/ItemForm";
 
 class Todos extends Component {
@@ -26,6 +26,7 @@ class Todos extends Component {
     this.handlerChangeInputText = this.handlerChangeInputText.bind(this);
     this.handlerAddTodo = this.handlerAddTodo.bind(this);
     this.handlerDisplayTodoList = this.handlerDisplayTodoList.bind(this);
+    this.handlerDeleteItem = this.handlerDeleteItem.bind(this);
     this.renderTodoItems = this.renderTodoItems.bind(this);
   }
 
@@ -67,10 +68,14 @@ class Todos extends Component {
     }
   };
 
+  handlerDeleteItem = id => {
+    this.props.deleteTodo(id);
+  };
+
   renderTodoItems = () => {
     let itemArray = [];
     Object.entries(this.state.list).map(([key, value]) => {
-      itemArray.push({ key: value.item });
+      itemArray.push({ key: value });
     });
     return itemArray;
   };
@@ -103,7 +108,7 @@ class Todos extends Component {
         { this.state.list && this.state.list.length > 0 ?
           <FlatList
             data={this.renderTodoItems()}
-            renderItem={({item}) => <ItemForm value={item.key} />}
+            renderItem={({item}) => <ItemForm value={item.key} onPress={id => this.handlerDeleteItem(id)} />}
           /> : null
         }
       </View>
@@ -113,13 +118,15 @@ class Todos extends Component {
 
 const mapDispatchToProps = dispatch => ({
   getTodosList: () => dispatch(getTodosList()),
-  postTodo: value => dispatch(postTodo(value))
+  postTodo: value => dispatch(postTodo(value)),
+  deleteTodo: value => dispatch(deleteTodo(value))
 });
 
 const mapStateToProps = state => ({
   todos: {
     list: state.todos.list,
-    postResult: state.todos.postResult
+    postResult: state.todos.postResult,
+    deleteResult: state.todos.deleteResult
   }
 });
 
