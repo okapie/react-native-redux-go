@@ -39,10 +39,12 @@ const reducers = handleActions(
 /**
  * Tasks.
  */
-export const postTodo = () => {
+export const postTodo = parameter => {
   return async dispatch => {
-    // TODO: connect to API.
-    dispatch(actions.postTodoDone(true));
+    const response = await TodosService.postTodo(parameter);
+    if (response.length > 0) {
+      dispatch(actions.postTodoDone(true));
+    }
   }
 };
 

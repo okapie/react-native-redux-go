@@ -5,6 +5,7 @@ import (
     "log"
     "net/http"
     "database/sql"
+    "io/ioutil"
 
     "github.com/gorilla/mux"
     "github.com/gorilla/handlers"
@@ -52,16 +53,21 @@ func getTodoList(w http.ResponseWriter, r *http.Request) {
 }
 
 func postTodo(w http.ResponseWriter, r *http.Request) {
-    db := openDB()
-    if r.Method == "POST" {
-        item := r.FormValue("item")
-        insForm, err := db.Prepare("INSERT INTO Tb_Todos(item) VALUES(?)")
-        if err != nil {
-            panic(err.Error())
-        }
-        insForm.Exec(item)
-        log.Println("INSERT: Item: " + item)
+    defer r.Body.Close()
+    body, err := ioutil.ReadAll(r.Body)
+    if err != nil {
+        log.Fatal(err)
     }
+
+    db := openDB()
+    item := string(body)
+    insForm, err := db.Prepare("INSERT INTO Tb_Todos(item) VALUES(?)")
+    if err != nil {
+        panic(err.Error())
+    }
+    insForm.Exec(item)
+    log.Println("INSERT: Item: " + item)
+
     defer db.Close()
     http.Redirect(w, r, "/", 200)
 }

@@ -7,4 +7,11 @@ export default class TodosService {
       .then(response => response.data)
       .catch(error => error.response.data)
   }
+
+  static async postTodo(parameter) {
+    return await client()
+      .post(`/todo`, parameter)
+      .then(response => response.data)
+      .catch(error => error.response.data)
+  }
 }
