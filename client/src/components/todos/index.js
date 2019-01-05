@@ -3,21 +3,20 @@ import {
   View,
   Text,
   TextInput,
-  Button,
   FlatList,
   StyleSheet
 } from "react-native";
 import { connect } from "react-redux";
 import { getTodosList, postTodo, deleteTodo } from "../../modules/todos";
 import { ItemForm } from "../common/molecules/ItemForm";
+import { ButtonComponent } from "../common/atoms/Button";
 
 class Todos extends Component {
   constructor(props) {
     super(props);
     this.state = {
       todos: {
-        list: [],
-        postResult: false
+        list: []
       },
       inputText: "",
       validation: {}
@@ -95,14 +94,12 @@ class Todos extends Component {
           onChangeText={this.handlerChangeInputText}
           style={styles.input}
         />
-        <Button
+        <ButtonComponent
           title="Add"
-          style={styles.button}
           onPress={this.handlerAddTodo}
         />
-        <Button
+        <ButtonComponent
           title="Show List"
-          style={styles.button}
           onPress={this.handlerDisplayTodoList}
         />
         { this.state.list && this.state.list.length > 0 ?
@@ -146,9 +143,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: "center",
     margin: 10
-  },
-  button: {
-    margin: 0
   },
   input: {
     width: 200,
