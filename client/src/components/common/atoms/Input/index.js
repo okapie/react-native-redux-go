@@ -1,17 +1,16 @@
 import React from "react";
 import { View, TextInput, StyleSheet } from "react-native";
 
-const SFCComponent = props => (
+const SFCComponent = ({ value }) => (
   <View>
     <TextInput
-      value={props.value}
-      onChangeText={() => {}}
+      value={value}
       style={styles.input}
     />
   </View>
 );
 
-export const Input = React.memo(SFCComponent);
+export const InputComponent = React.memo(SFCComponent);
 
 const styles = StyleSheet.create({
   input: {
