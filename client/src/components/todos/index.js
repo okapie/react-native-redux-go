@@ -88,6 +88,10 @@ class Todos extends Component {
           );
     return (
       <View style={styles.container}>
+        <ButtonComponent
+          title="Information"
+          onPress={() => this.props.navigation.navigate("Introduction")}
+        />
         { validation }
         <TextInput
           value={this.state.inputText}
